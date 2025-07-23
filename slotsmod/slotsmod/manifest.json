@@ -1,0 +1,10 @@
+{
+  "Name": "slotsmod",
+  "Author": "sqrl",
+  "Version": "1.0.0",
+  "Description": "abc",
+  "UniqueID": "sqrl.slotsmod",
+  "EntryDll": "slotsmod.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}
