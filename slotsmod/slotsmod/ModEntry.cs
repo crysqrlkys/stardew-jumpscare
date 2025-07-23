@@ -16,6 +16,7 @@ namespace slotsmod
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
+            //ignore if not in game
             if (!Context.IsWorldReady)
                 return;
 
