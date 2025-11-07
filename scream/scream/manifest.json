@@ -1,0 +1,9 @@
+{
+  "Name": "scream",
+  "Author": "sqrl",
+  "Version": "1.0.0",
+  "Description": "abc",
+  "UniqueID": "sqrl.scream",
+  "EntryDll": "scream.dll",
+  "MinimumApiVersion": "4.0.0"
+}
