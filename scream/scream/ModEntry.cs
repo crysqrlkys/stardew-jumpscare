@@ -7,6 +7,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using System;
+using System.Text;
 
 namespace scream
 {
@@ -14,7 +15,7 @@ namespace scream
     {
         private Random random = new();
 
-        private readonly int chance = 1_000_000;
+        private readonly int chance = 100_000;
         private readonly int chestChance = 100;
 
         private SoundEffect screamSound;
@@ -23,10 +24,15 @@ namespace scream
         private int frameWidth = 200;
         private int frameHeight = 150;
         private int frameCount = 14;
+
         private int currentFrame = 0;
         private double frameTimer = 0;
         private double frameDuration = 50;
         private bool playing = false;
+
+        //DEBUG trigger: Attack
+        private readonly string cheatCode = "BAGOWPG";
+        private StringBuilder inputBuffer = new();
 
         public override void Entry(IModHelper helper)
         {
@@ -70,10 +76,18 @@ namespace scream
                 }
             }
 
-            //TODO: Remove DEBUG
-            if (e.Button == SButton.P)
+            if (e.Button.ToString().Length == 1 && char.IsLetter(e.Button.ToString()[0]))
             {
-                StartScare("Debug");
+                inputBuffer.Append(e.Button.ToString().ToUpper());
+
+                if (inputBuffer.Length > cheatCode.Length)
+                    inputBuffer.Remove(0, inputBuffer.Length - cheatCode.Length);
+
+                if (inputBuffer.ToString().EndsWith(cheatCode))
+                {
+                    StartScare("Debug");
+                    inputBuffer.Clear();
+                }
             }
 
             this.Monitor.Log($"{Game1.player.Name} pressed {e.Button}.", LogLevel.Debug);
@@ -120,10 +134,12 @@ namespace scream
             int y = (currentFrame / cols) * frameHeight;
             Rectangle source = new Rectangle(x, y, frameWidth, frameHeight);
 
-            e.SpriteBatch.Draw(spriteSheet,
+            e.SpriteBatch.Draw(
+                spriteSheet,
                 new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height),
                 source,
-                Color.White);
+                Color.White
+            );
         }
     }
 }
