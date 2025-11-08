@@ -89,8 +89,6 @@ namespace jumpscare
                     inputBuffer.Clear();
                 }
             }
-
-            this.Monitor.Log($"{Game1.player.Name} pressed {e.Button}.", LogLevel.Debug);
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
