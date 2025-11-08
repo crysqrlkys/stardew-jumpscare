@@ -1,9 +1,9 @@
 {
-  "Name": "scream",
+  "Name": "jumpscare",
   "Author": "sqrl",
   "Version": "1.0.0",
   "Description": "Random Jumpscare Trigger Description: This mod introduces two jumpscares to Stardew Valley. The first has a 1 in 100,000 chance of triggering on any game tick (~60 ticks per second), while the second occurs with a 1 in 100 chance each time a chest is opened.",
-  "UniqueID": "sqrl.scream",
-  "EntryDll": "scream.dll",
+  "UniqueID": "sqrl.jumpscare",
+  "EntryDll": "jumpscare.dll",
   "MinimumApiVersion": "4.0.0"
 }

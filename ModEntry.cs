@@ -9,7 +9,7 @@ using StardewValley.Objects;
 using System;
 using System.Text;
 
-namespace scream
+namespace jumpscare
 {
     internal sealed class ModEntry : Mod
     {
@@ -18,8 +18,8 @@ namespace scream
         private readonly int chance = 100_000;
         private readonly int chestChance = 100;
 
-        private SoundEffect screamSound;
-        private Texture2D spriteSheet;
+        private SoundEffect scream = null!;
+        private Texture2D spriteSheet = null!;
 
         private int frameWidth = 200;
         private int frameHeight = 150;
@@ -43,7 +43,7 @@ namespace scream
             string soundPath = Path.Combine(assetsPath, "foxy.wav");
 
             spriteSheet = helper.ModContent.Load<Texture2D>(spritePath);
-            screamSound = SoundEffect.FromFile(soundPath);
+            scream = SoundEffect.FromFile(soundPath);
 
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
@@ -106,7 +106,7 @@ namespace scream
         }
         private void StartScare(string source)
         {
-            screamSound.CreateInstance().Play();
+            scream.CreateInstance().Play();
             playing = true;
             currentFrame = 0;
             frameTimer = 0;
