@@ -6,8 +6,9 @@ A Stardew Valley mod that adds jumpscares to spice up your farming life.
 
 ## Features
 
-- **1 in 100,000 chance per game tick** (~60 ticks per second) to trigger a jumpscare at any time.
-- **1 in 100 chance** to trigger a jumpscare when opening a chest.
+- **1 in 100,000 chance per game tick*** (~60 ticks per second) to trigger a jumpscare at any time.
+- **1 in 100 chance*** to trigger a jumpscare when opening a chest.  
+*default rates
 
 ## Requirements
 
@@ -19,5 +20,6 @@ A Stardew Valley mod that adds jumpscares to spice up your farming life.
 1. Download the mod from [Releases](https://github.com/crysqrlkys/stardew-jumpscare/releases).
 2. Extract the contents into your `Mods` folder.
 
-## Development and configuration
-Change game directory in `jumpscare.csproj` to yours, change values in code 👻
+## Configuration
+1. Call SMAPI console command: `set_foxy_chances <randomChance:int> <chestChance:int>`.
+2. Edit Config file in the mod directory.
