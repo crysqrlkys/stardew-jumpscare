@@ -11,13 +11,16 @@ using System.Text;
 
 namespace jumpscare
 {
+    public class ModConfig
+    {
+        public int RandomChance { get; set; } = 100_000;
+        public int ChestChance { get; set; } = 100;
+    }
+
     internal sealed class ModEntry : Mod
     {
         private Random random = new();
-
-        private readonly int chance = 100_000;
-        private readonly int chestChance = 100;
-
+        private ModConfig Config = null!;
         private SoundEffect scream = null!;
         private Texture2D spriteSheet = null!;
 
@@ -38,6 +41,8 @@ namespace jumpscare
         {
             random = new Random();
 
+            Config = helper.ReadConfig<ModConfig>();
+
             string assetsPath = Path.Combine(helper.DirectoryPath, "assets");
             string spritePath = Path.Combine(assetsPath, "foxy.png");
             string soundPath = Path.Combine(assetsPath, "foxy.wav");
@@ -48,6 +53,8 @@ namespace jumpscare
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.Display.Rendered += this.OnRendered;
+
+            helper.ConsoleCommands.Add("set_foxy_chances", "Set jumpscare chances", this.SetJumpscareChanceCommand);
         }
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
@@ -65,8 +72,8 @@ namespace jumpscare
                     {
                         if (obj is Chest chest)
                         {
-                            if (random.Next(chestChance) == 0)
-                                StartScare("Chest"); 
+                            if (random.Next(Config.ChestChance) == 0)
+                                StartScare(); 
                         }
                     }
                 }
@@ -85,7 +92,7 @@ namespace jumpscare
 
                 if (inputBuffer.ToString().EndsWith(cheatCode))
                 {
-                    StartScare("Debug");
+                    StartScare();
                     inputBuffer.Clear();
                 }
             }
@@ -97,18 +104,17 @@ namespace jumpscare
             if (!Context.IsWorldReady)
                 return;
             
-            if (random.Next(chance) == 0)
+            if (random.Next(Config.RandomChance) == 0)
             {
-                StartScare("Random");
+                StartScare();
             }
         }
-        private void StartScare(string source)
+        private void StartScare()
         {
             scream.CreateInstance().Play();
             playing = true;
             currentFrame = 0;
             frameTimer = 0;
-            this.Monitor.Log($"{source} scream", LogLevel.Debug);
         }
 
         private void OnRendered(object? sender, RenderedEventArgs e)
@@ -138,6 +144,24 @@ namespace jumpscare
                 source,
                 Color.White
             );
+        }
+
+        private void SetJumpscareChanceCommand(string command, string[] args)
+        {
+            if (args.Length >= 2)
+            {
+                if (int.TryParse(args[0], out int randomChance))
+                    Config.RandomChance = randomChance;
+                if (int.TryParse(args[1], out int chestChance))
+                    Config.ChestChance = chestChance;
+
+                Helper.WriteConfig(Config);
+                Monitor.Log($"Updated chances: Random={Config.RandomChance}, Chest={Config.ChestChance}", LogLevel.Info);
+            }
+            else
+            {
+                Monitor.Log("Usage: set_foxy_chances <randomChance> <chestChance>", LogLevel.Info);
+            }
         }
     }
 }
